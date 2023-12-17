@@ -1,0 +1,12 @@
+// src/styles/global.scss
+
+// Example Bootstrap variable override
+$primary: #007bff;
+
+// Import Bootstrap SCSS
+@import '~bootstrap/scss/bootstrap';
+
+// Global styles
+body {
+  background-color: #f8f9fa;
+}
