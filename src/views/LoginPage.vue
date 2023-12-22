@@ -1,22 +1,43 @@
 <template>
-  <div>
-    <MainHeader />
-    <h1>Welcome to FireTrack System</h1>
-    <!-- Content goes here -->
+  <div className="login-page container mt-4">
+    <div className="row">
+      <div className="col-md-6 mb-4">
+        <login-form @login-success="handleLoginSuccess"/>
+      </div>
+      <div className="col-md-6">
+        <registration-form @register-success="handleRegisterSuccess"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-
-import MainHeader from "@/components/MainHeader";
+import LoginForm from '@/components/LoginForm.vue';
+import RegistrationForm from '@/components/RegistrationForm.vue';
+import {useRouter} from 'vue-router';
 
 export default {
   components: {
-    MainHeader
+    LoginForm,
+    RegistrationForm
+  },
+  setup() {
+    const router = useRouter();
+
+    const handleLoginSuccess = () => {
+      router.push('/profile');
+    };
+
+    const handleRegisterSuccess = () => {
+      router.push('/map');
+    };
+
+    return {handleLoginSuccess, handleRegisterSuccess};
   }
 };
 </script>
 
 <style scoped>
-/* Page specific styles */
+.login-page {
+}
 </style>
