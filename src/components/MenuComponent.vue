@@ -68,6 +68,7 @@ export default {
     handleButtonClick() {
       if (this.isAuthenticated) {
         this.$store.dispatch('logoutUser');
+        this.$router.push('/login');
       } else {
         this.$router.push('/login');
       }

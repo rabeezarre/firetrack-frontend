@@ -19,7 +19,7 @@
       <!-- Scanning History (Right Side) -->
       <div class="col-md-6">
         <h2>Scanning History</h2>
-        <div v-if="scanningHistory > 0">
+        <div v-if="scanningHistory.length > 0">
           <ul class="scanning-history-list">
             <li v-for="scan in scanningHistory" :key="scan.historyId" class="scanning-history-item">
               <div v-if="scan.historyId != null">

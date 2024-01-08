@@ -19,10 +19,10 @@
       <li><strong>Backend:</strong> Centralized database for web and mobile interfaces.</li>
       <li><strong>Embedded Programming:</strong> Utilizes LoRaWAN protocol for scalable data sharing.</li>
     </ul>
-    <h2 class="mt-4">Next Steps</h2>
+    <h2 class="mt-4">Other</h2>
     <p>
-      In the future, we plan to enhance the system with advanced features like predictive modeling and AI-driven fire
-      spread projection.
+      You can find full documentation on this page:
+      <router-link to="/docs">Documentation Page</router-link>
     </p>
   </div>
 </template>
