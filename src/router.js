@@ -3,6 +3,7 @@ import Home from './views/HomePage.vue';
 import Login from './views/LoginPage.vue';
 import Map from './views/MapPage.vue';
 import Profile from './views/ProfilePage.vue';
+import Docs from "./views/DocumentationPage.vue";
 
 const routes = [
     {
@@ -24,7 +25,12 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: Profile
-    }
+    },
+    {
+        path: '/docs',
+        name: 'Docs',
+        component: Docs
+    },
 ];
 
 const router = createRouter({

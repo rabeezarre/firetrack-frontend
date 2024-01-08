@@ -11,7 +11,7 @@
 <!--          <button @click="editProfile" class="btn btn-primary">Edit Profile</button>-->
           <button @click="confirmDelete" class="btn btn-danger">Delete Account</button>
         </div>
-        <div v-else>
+        <div v-else class="no-history">
           <p>User data is not available.</p>
         </div>
       </div>
@@ -19,13 +19,16 @@
       <!-- Scanning History (Right Side) -->
       <div class="col-md-6">
         <h2>Scanning History</h2>
-        <ul class="scanning-history-list">
-          <li v-for="scan in scanningHistory" :key="scan.historyId" class="scanning-history-item">
-            <p><strong>Scan Date:</strong> {{ formatDate(scan.timestamp) }}</p>
-            <!-- Add more scan details as needed -->
-          </li>
-        </ul>
-        <div v-if="scanningHistory.length === 0" class="no-history">
+        <div v-if="scanningHistory > 0">
+          <ul class="scanning-history-list">
+            <li v-for="scan in scanningHistory" :key="scan.historyId" class="scanning-history-item">
+              <div v-if="scan.historyId != null">
+                <p><strong>Scan Date:</strong> {{ formatDate(scan.timestamp) }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div v-else class="no-history">
           <p>No scanning history available.</p>
         </div>
       </div>

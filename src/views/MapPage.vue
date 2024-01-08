@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-4">
-    <h1 class="display-4">Interactive Map</h1>
+    <h1>Interactive Map</h1>
     <div id="map" class="leaflet-map"></div>
   </div>
 </template>
@@ -82,13 +82,9 @@ export default {
 
 <style scoped lang="scss">
 .container {
-  max-width: 800px;
+  max-width: 1140px;
   margin: 0 auto;
   padding: 20px;
-}
-
-.display-4 {
-  font-size: 2.5rem;
 }
 
 .leaflet-map {
