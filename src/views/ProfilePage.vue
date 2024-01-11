@@ -8,7 +8,6 @@
           <template v-for="field in userFields" :key="field.key">
             <p><strong>{{ field.label }}:</strong> {{ user[field.key] }}</p>
           </template>
-<!--          <button @click="editProfile" class="btn btn-primary">Edit Profile</button>-->
           <button @click="confirmDelete" class="btn btn-danger">Delete Account</button>
         </div>
         <div v-else class="no-history">
@@ -19,44 +18,42 @@
       <!-- Scanning History (Right Side) -->
       <div class="col-md-6">
         <h2>Scanning History</h2>
-        <div v-if="scanningHistory.length > 0">
+        <div v-if="displayedHistory.length > 0">
           <ul class="scanning-history-list">
-            <li v-for="scan in scanningHistory" :key="scan.historyId" class="scanning-history-item">
-              <div v-if="scan.historyId != null">
-                <p><strong>Scan Date:</strong> {{ formatDate(scan.timestamp) }}</p>
-              </div>
+            <li v-for="scan in displayedHistory" :key="scan.historyId" class="scanning-history-item">
+              <p><strong>Point {{ scan.pointId }}:</strong> {{ formatDate(scan.timestamp) }}</p>
             </li>
           </ul>
+          <button v-if="displayedHistory.length < scanningHistory.length" @click="showMore" class="btn btn-primary">Show More</button>
         </div>
         <div v-else class="no-history">
           <p>No scanning history available.</p>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Delete Confirmation Modal -->
-  <div class="modal" tabindex="-1" role="dialog" v-if="showDeleteModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Confirm Deletion</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeDeleteModal">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete your account?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeDeleteModal">Cancel</button>
-          <button type="button" class="btn btn-danger" @click="deleteAccount">Delete</button>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" tabindex="-1" role="dialog" v-if="showDeleteModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Deletion</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeDeleteModal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete your account?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeDeleteModal">Cancel</button>
+            <button type="button" class="btn btn-danger" @click="deleteAccount">Delete</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import { computed, defineComponent, onMounted, ref } from 'vue';
@@ -69,7 +66,9 @@ export default defineComponent({
     const store = useStore();
     const user = computed(() => store.state.user);
     const scanningHistory = ref([]);
+    const displayedHistory = ref([]);
     const showDeleteModal = ref(false);
+    const limit = 5;
 
     const userFields = [
       { key: 'email', label: 'Email' },
@@ -77,10 +76,6 @@ export default defineComponent({
       { key: 'lastName', label: 'Last Name' },
       { key: 'position', label: 'Position' },
     ];
-
-    const editProfile = () => {
-      //router.push(`/edit-profile/${user.value.userId}`);
-    };
 
     const confirmDelete = () => {
       showDeleteModal.value = true;
@@ -105,7 +100,8 @@ export default defineComponent({
         const response = await axios.get(
             `${process.env.VUE_APP_API_URL}/scanningHistory/user/${user.value.userId}`
         );
-        scanningHistory.value = response.data;
+        scanningHistory.value = response.data.reverse();
+        displayedHistory.value = scanningHistory.value.slice(0, limit);
       } catch (error) {
         console.error('Error fetching scanning history:', error);
       }
@@ -116,7 +112,11 @@ export default defineComponent({
       return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
     };
 
-    // Fetch scanning history when the component is mounted
+    const showMore = () => {
+      const nextSize = Math.min(scanningHistory.value.length, displayedHistory.value.length + limit);
+      displayedHistory.value = scanningHistory.value.slice(0, nextSize);
+    };
+
     onMounted(() => {
       fetchScanningHistory();
     });
@@ -125,19 +125,19 @@ export default defineComponent({
       user,
       userFields,
       scanningHistory,
+      displayedHistory,
       showDeleteModal,
-      editProfile,
       confirmDelete,
       closeDeleteModal,
       deleteAccount,
       formatDate,
+      showMore,
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
-
 .profile-page {
   padding: 20px;
 }
