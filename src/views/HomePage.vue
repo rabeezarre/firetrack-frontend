@@ -19,6 +19,16 @@
       <li><strong>Backend:</strong> Centralized database for web and mobile interfaces.</li>
       <li><strong>Embedded Programming:</strong> Utilizes LoRaWAN protocol for scalable data sharing.</li>
     </ul>
+    <h2 class="mt-4">Demonstration Video</h2>
+    <p>
+      Watch demonstration video:
+      <a href="https://drive.google.com/file/d/1_jAb_PXKK8qLGV336gEdbctJ8pc1Cu3n/view?usp=sharing">FireTrack Demo Video</a>
+    </p>
+    <h2 class="mt-4">Testing the Website</h2>
+    <p>
+      Access live site: <a href="https://firetrack.cleverapps.io/">firetrack.cleverapps.io</a><br>
+      Login with email: worker@example.com and password: worker
+    </p>
     <h2 class="mt-4">Other</h2>
     <p>
       You can find full documentation on this page:
@@ -28,11 +38,19 @@
       You can find Javadoc on this page:
       <a href="https://rabeezarre.github.io/firetrack/">Javadoc</a>
     </p>
+    <p>
+      For more details, please refer to the respective repositories on GitHub:</p>
+      <ul>
+        <li><a href="https://github.com/rabeezarre/firetrack-backend">Backend Repository</a></li>
+        <li><a href="https://github.com/rabeezarre/firetrack-frontend">Frontend Repository</a></li>
+        <li><a href="https://github.com/rabeezarre/firetrack-mobile">Mobile Repository</a></li>
+        <li><a href="https://github.com/rabeezarre/firetrack-embed">Embedded Programming Repository</a></li>
+      </ul>
+
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'HomePage'
 };
