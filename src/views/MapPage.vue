@@ -38,7 +38,9 @@ export default {
   },
   methods: {
     initMap() {
-      this.map = L.map("map").setView([0, 0], 2);
+      this.map = L.map("map", {
+        scrollWheelZoom: false,
+      }).setView([0, 0], 2);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '© OpenStreetMap contributors'
       }).addTo(this.map);
