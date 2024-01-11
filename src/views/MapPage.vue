@@ -2,6 +2,7 @@
   <div class="container mt-4">
     <h1>Interactive Map</h1>
     <div id="map" class="leaflet-map"></div>
+    <SensorHistory v-if="showHistory" :pointId="selectedPointId"></SensorHistory>
   </div>
 </template>
 
@@ -10,70 +11,78 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import markerIcon from "@/assets/icons/marker.svg";
+import SensorHistory from '/src/components/SensorHistory.vue';
 
 export default {
   name: "MapPage",
+  components: {
+    SensorHistory
+  },
   data() {
     return {
       map: null,
-      trackingPoints: [], // Store tracking points data
+      trackingPoints: [],
       customMarkerIcon: L.icon({
         iconUrl: markerIcon,
-        iconSize: [32, 32], // Customize the icon size
-        iconAnchor: [16, 32], // Customize the icon anchor
-        popupAnchor: [0, -32], // Customize the popup anchor
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
       }),
+      showHistory: false,
+      selectedPointId: null,
     };
   },
   mounted() {
-    // Initialize the map
-    this.map = L.map("map").setView([0, 0], 2); // Set initial view and zoom level
-
-    // Add a tile layer
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(this.map);
-
-    // Fetch tracking points data
+    this.initMap();
     this.fetchTrackingPoints();
   },
   methods: {
+    initMap() {
+      this.map = L.map("map").setView([0, 0], 2);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(this.map);
+
+      this.map.on('popupopen', (e) => {
+        e.popup._container.addEventListener('show-history', this.showPointHistory);
+      });
+    },
     async fetchTrackingPoints() {
       try {
         const response = await axios.get(`${process.env.VUE_APP_API_URL}/trackingPoints`);
         this.trackingPoints = response.data;
-
-        // Add custom markers for each tracking point
         this.addMarkers();
-
-        // Zoom to fit all markers
         this.map.fitBounds(this.getMarkersBounds());
       } catch (error) {
         console.error('Error fetching tracking points:', error);
       }
     },
     addMarkers() {
-      // Iterate through tracking points and add custom markers
       this.trackingPoints.forEach((point) => {
-        const marker = L.marker([point.latitude, point.longitude], {
-          icon: this.customMarkerIcon,
-        }).addTo(this.map);
-
-        // Customize the marker popup content
-        const popupContent = `<strong>Point ID:</strong> ${point.pointId}<br>
-                              <strong>Status:</strong> ${point.status}`;
+        const marker = L.marker([point.latitude, point.longitude], { icon: this.customMarkerIcon }).addTo(this.map);
+        const popupContent = `<div>
+                                <strong>Point ID:</strong> ${point.pointId}<br>
+                                <strong>Status:</strong> ${point.status}<br>
+                                <button class="btn btn-secondary btn-sm" onclick="this.dispatchEvent(new CustomEvent('show-history', { detail: ${point.pointId}, bubbles: true }))">Show History</button>
+                              </div>`;
         marker.bindPopup(popupContent);
       });
     },
+    showPointHistory(event) {
+      this.selectedPointId = event.detail;
+      this.showHistory = true;
+      this.$nextTick(() => {
+        const historyEl = this.$el.querySelector('.sensor-history');
+        if (historyEl) {
+          historyEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    },
     getMarkersBounds() {
-      // Create a LatLngBounds object to store the bounds of all markers
       const bounds = L.latLngBounds();
-
-      // Iterate through tracking points and extend the bounds for each marker
       this.trackingPoints.forEach((point) => {
         bounds.extend([point.latitude, point.longitude]);
       });
-
       return bounds;
     },
   },

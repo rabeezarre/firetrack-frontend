@@ -10,7 +10,7 @@
       <li>Real-time monitoring of forest conditions.</li>
       <li>Tracking points inspections in the forest using mobile devices.</li>
       <li>Timely emergency alerts for rapid response to wildfire incidents.</li>
-<!--      <li>Fire spread projection for effective containment strategies.</li>-->
+      <li>Fire spread projection for effective containment strategies.</li>
     </ul>
     <h2 class="mt-4">Sub-Systems</h2>
     <ul>
@@ -23,6 +23,10 @@
     <p>
       You can find full documentation on this page:
       <router-link to="/docs">Documentation Page</router-link>
+    </p>
+    <p>
+      You can find Javadoc on this page:
+      <a href="https://rabeezarre.github.io/firetrack/">Javadoc</a>
     </p>
   </div>
 </template>
