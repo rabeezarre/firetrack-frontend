@@ -4,6 +4,9 @@
 
 FireTrack's frontend is an integral part of the Wildfire Management System, designed to enhance the monitoring, early detection, and response to wildfires.
 
+### Demonstration
+Deployed version can be accessed via link: https://firetrack.cleverapps.io/ 
+
 ### Overview
 
 The FireTrack frontend provides an interactive web interface for real-time monitoring of forest conditions and wildfire management. It is a central hub where workers can log in, view their profile, scanning history, and interact with the tracking points on the map.
